@@ -1,0 +1,101 @@
+
+
+{% extends 'base-back.html.twig'%}
+{% block body %}
+    <!doctype html>
+    <html lang="en"> <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <style>
+
+        </style>
+        <title>Document</title>
+    </head>
+    <body >
+    <div style="margin-top: 100px ; margin-left: 400px">
+
+        <h1 style="margin-left: 25px; margin-left: 350px ;margin-bottom: 25px; color: #86b7fe; font-family: 'Arial Black'; font-size: xx-large">Liste des Commandes</h1>
+
+        {% for message in app.flashes('info')  %}
+            <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+                {{ message }}
+
+            </div>
+        {% endfor %}
+        <div class="card" style="margin-right: 35px">
+        <div class="card-body" style="margin-right: 50px">
+         <br>
+            <br>
+            <input type="text" class="form-control" placeholder="Search…" aria-label="Search" id="search">
+
+
+            <table  id="tableac" class="table table-striped">
+
+                <thead>
+                <tr >
+                    <th style="margin-right: 25px">Référence  Commande <a href="{{ path('idd') }}"><i class="bi bi-sort-up"></i></a><a href="{{ path('id') }}"><i  class="bi bi-sort-down"></i></a></th>
+                    <th >Nom plat <a href="{{ path('platt') }}"><i class="bi bi-sort-up"></i></a><a href="{{ path('plat') }}"><i  class="bi bi-sort-down"></i></a></th>
+                    <th >Prix plat<a href="{{ path('prix') }}"><i class="bi bi-sort-up"></i></a><a href="{{ path('price') }}"><i  class="bi bi-sort-down"></i></a></th>
+                    <th>quantite <a href="{{ path('Qun') }}"><i class="bi bi-sort-up"></i></a><a href="{{ path('refdesc') }}"><i  class="bi bi-sort-down"></i></a></th>
+                    <th>Client</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for p in panier  %}
+                <tr>
+                    <td>{{ p.idpanier }}</td>
+                    <td>{{ p.idplat.Nomplat }}</td>
+                    <td>{{ p.idplat.prixPlat }}</td>
+                    <td>{{ p.quantite }}</td>
+                    <td>{{ p.client }}</td>
+                    <td><a class="btn btn-outline-danger" href ={{ path('update',{'id':p.idpanier}) }}> Update </a></td>
+                    <td><a  class="btn btn-outline-success" href ={{ path('supp',{'id':p.idpanier}) }}> Supprimmer </a></td>
+
+
+                </tr {% endfor %}>
+                <script>
+                    $(document).ready(function(){
+                        $('#search').keyup(function(){
+                            search_table($(this).val());
+                        });
+                        function search_table(value){
+                            $('#tableac tbody tr').each(function(){
+                                var found = 'false';
+                                $(this).each(function(){
+                                    if($(this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0)
+                                    {
+                                        found = 'true';
+                                    }
+                                });
+                                if(found == 'true')
+                                {
+                                    $(this).show();
+
+                                }
+                                else
+                                {
+                                    $(this).hide();
+
+                                }
+                            });
+                        }
+                    });
+                </script>
+                </tbody>
+            </table>
+
+        </div>
+            <div class="navigation">
+                {{ knp_pagination_render(panier) }}
+            </div>
+
+</div>
+    </div>
+    </body>
+    </html>
+{% endblock %}
